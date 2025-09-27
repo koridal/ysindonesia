@@ -1,27 +1,48 @@
 // components/home/ProjectHighlight.tsx
-"use client";
+// 한 파일에 서버(fetch) + UI 컴포넌트 통합 버전
+// - 기본: 4개만 노출(limit = 4)
+// - 전체 노출: <ProjectHighlight limit={Infinity} /> 로 사용
 
+import { client } from "@/app/lib/sanity";
 import { urlFor, type MyImageSource } from "@/lib/sanity.image";
 import Image from "next/image";
 import Link from "next/link";
 import type { simpleProjectCard } from "@/app/lib/interface";
 
+export const revalidate = 30;
+
+// GROQ 쿼리
+const QUERY = `
+  *[_type == 'post'] | order(_createdAt desc) {
+    title,
+    smallDescription,
+    "currentSlug": slug.current,
+    titleImage
+  }
+`;
+
+// 공통 카드 타입: 이미지 타입 확정
 type Card = simpleProjectCard & { titleImage: MyImageSource };
 
-export default function ProjectHighlight({
+// UI 전용 하이라이트(클라이언트 훅/상태 없이 SSR 안전)
+function HighlightUI({
   data = [],
   heading = "Featured Projects",
   subheading = "Selected works across manufacturing, logistics, and process industries.",
   ctaHref = "/projects",
   ctaLabel = "View All",
+  limit = 4,
 }: {
   data?: Card[];
   heading?: string;
   subheading?: string;
   ctaHref?: string;
   ctaLabel?: string;
+  limit?: number; // Infinity 전달 시 전체 노출
 }) {
-  const list = (data ?? []).slice(0, 3);
+  const source = data ?? [];
+  const list =
+    Number.isFinite(limit) ? source.slice(0, Math.max(0, Math.floor(limit))) : source;
   const has = list.length > 0;
 
   return (
@@ -43,7 +64,7 @@ export default function ProjectHighlight({
         {!has ? (
           <div className="mt-10 text-ink/70 dark:text-white/70">아직 프로젝트가 없어요. 곧 업데이트할게!</div>
         ) : (
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
+          <div className="mt-8 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {list.map((p) => {
               let imgUrl: string | null = null;
               try {
@@ -61,7 +82,7 @@ export default function ProjectHighlight({
                           src={imgUrl}
                           alt={p.title}
                           fill
-                          sizes="(min-width: 768px) 33vw, 100vw"
+                          sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       )}
@@ -97,5 +118,32 @@ export default function ProjectHighlight({
         )}
       </div>
     </section>
+  );
+}
+
+// 서버에서 데이터 가져와서 UI에 전달하는 래퍼(서버 컴포넌트)
+export default async function ProjectHighlight({
+  heading,
+  subheading,
+  ctaHref,
+  ctaLabel,
+  limit = 4,
+}: {
+  heading?: string;
+  subheading?: string;
+  ctaHref?: string;
+  ctaLabel?: string;
+  limit?: number; // /projects 전체 페이지에서는 limit={Infinity}
+}) {
+  const data = await client.fetch<Card[]>(QUERY);
+  return (
+    <HighlightUI
+      data={data}
+      heading={heading}
+      subheading={subheading}
+      ctaHref={ctaHref}
+      ctaLabel={ctaLabel}
+      limit={limit}
+    />
   );
 }

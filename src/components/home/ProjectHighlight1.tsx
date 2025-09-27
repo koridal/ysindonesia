@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/lib/sanity.image";
-import type { MyImageSource } from "@/lib/sanity.image";
 import type { simpleProjectCard } from "@/app/lib/interface";
 
-type Card = simpleProjectCard & { titleImage: MyImageSource };
+type Card = simpleProjectCard;
 
 export default function ProjectHighlight({
   data = [],
@@ -21,8 +20,7 @@ export default function ProjectHighlight({
   ctaHref?: string;
   ctaLabel?: string;
 }) {
-  // 최대 4개만 노출
-  const list = (data ?? []).slice(0, 4);
+  const list = data ?? [];
   const has = list.length > 0;
 
   return (
@@ -30,12 +28,8 @@ export default function ProjectHighlight({
       <div className="container-site">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl md:text-3xl font-semibold text-ink dark:text-white">
-              {heading}
-            </h2>
-            <p className="mt-2 text-ink/80 dark:text-white/80 max-w-2xl">
-              {subheading}
-            </p>
+            <h2 className="text-2xl md:text-3xl font-semibold text-ink dark:text-white">{heading}</h2>
+            <p className="mt-2 text-ink/80 dark:text-white/80 max-w-2xl">{subheading}</p>
           </div>
           <Link
             href={ctaHref}
@@ -46,29 +40,19 @@ export default function ProjectHighlight({
         </div>
 
         {!has ? (
-          <div className="mt-10 text-ink/70 dark:text-white/70">
-            아직 프로젝트가 없어요. 곧 업데이트할게!
-          </div>
+          <div className="mt-10 text-ink/70 dark:text-white/70">아직 프로젝트가 없어요. 곧 업데이트할게!</div>
         ) : (
-          <div className="mt-8 grid gap-6 md:grid-cols-4">
+          <div className="mt-8 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {list.map((p) => {
               let imgUrl: string | null = null;
               try {
-                imgUrl = urlFor(p.titleImage)
-                  .width(1200)
-                  .height(750)
-                  .auto("format")
-                  .url();
+                imgUrl = urlFor(p.titleImage).width(1200).height(750).auto("format").url();
               } catch {
                 imgUrl = null;
               }
 
               return (
-                <Link
-                  key={p.currentSlug}
-                  href={`/projects/${p.currentSlug}`}
-                  className="group"
-                >
+                <Link key={p.currentSlug} href={`/projects/${p.currentSlug}`} className="group">
                   <div className="overflow-hidden rounded-2xl border border-black/5 dark:border-white/10 bg-white/60 dark:bg-white/[0.03] backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.10)] transition-transform duration-300 group-hover:-translate-y-[2px]">
                     <div className="relative aspect-[16/10] w-full">
                       {imgUrl && (
@@ -76,7 +60,7 @@ export default function ProjectHighlight({
                           src={imgUrl}
                           alt={p.title}
                           fill
-                          sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 100vw"
+                          sizes="(min-width: 1280px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                         />
                       )}
@@ -97,9 +81,7 @@ export default function ProjectHighlight({
                       />
                     </div>
                     <div className="p-4">
-                      <h3 className="font-semibold text-ink dark:text-white line-clamp-2">
-                        {p.title}
-                      </h3>
+                      <h3 className="font-semibold text-ink dark:text-white line-clamp-2">{p.title}</h3>
                       {p.smallDescription && (
                         <p className="text-sm mt-1 text-ink/80 dark:text-white/80 line-clamp-2">
                           {p.smallDescription}
