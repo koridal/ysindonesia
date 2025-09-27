@@ -58,18 +58,21 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-// ✅ PageProps 명확히 지정
-interface PageProps {
-  params: {
-    slug: string;
-  };
+// 정적 파라미터 생성: 타입 추론 흔들림 방지용(강력 추천)
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  const slugs = await client.fetch<string[]>(
+    `*[_type == "post" && defined(slug.current)].slug.current`
+  );
+  return slugs.map((slug) => ({ slug }));
 }
 
-// ✅ async 서버 컴포넌트
-export default async function Page({ params }: PageProps) {
-  const { slug } = params;
-
-  const data = await client.fetch<FullProject>(QUERY, { slug });
+// 페이지 함수: 인라인 타입만 사용 (PageProps 같은 별도 타입 금지)
+export default async function Page({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const data = await client.fetch<FullProject>(QUERY, { slug: params.slug });
   if (!data) return notFound();
 
   let coverUrl: string | null = null;
