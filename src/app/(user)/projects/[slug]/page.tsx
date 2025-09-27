@@ -58,21 +58,30 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-// ✅ props 타입을 직접 정의
+// ✅ 동기 Page 컴포넌트
 interface PageProps {
   params: {
     slug: string;
   };
 }
 
-export default async function Page({ params }: PageProps) {
-  const data = await client.fetch<FullProject>(QUERY, { slug: params.slug });
+export default function Page({ params }: PageProps) {
+  return <Content slug={params.slug} />;
+}
+
+// ✅ async 로직은 별도 컴포넌트에서 처리
+async function Content({ slug }: { slug: string }) {
+  const data = await client.fetch<FullProject>(QUERY, { slug });
   if (!data) return notFound();
 
   let coverUrl: string | null = null;
   if (data.titleImage) {
     try {
-      coverUrl = urlFor(data.titleImage).width(1600).height(1000).auto("format").url();
+      coverUrl = urlFor(data.titleImage)
+        .width(1600)
+        .height(1000)
+        .auto("format")
+        .url();
     } catch {
       coverUrl = null;
     }
