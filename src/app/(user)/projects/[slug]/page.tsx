@@ -58,18 +58,19 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-// ✅ 동기 Page 컴포넌트
-interface PageProps {
+// ✅ PageProps 이름 충돌 방지 → ProjectPageProps 로 변경
+interface ProjectPageProps {
   params: {
     slug: string;
   };
 }
 
-export default function Page({ params }: PageProps) {
+// ✅ 동기 Page → 타입 에러 사라짐
+export default function Page({ params }: ProjectPageProps) {
   return <Content slug={params.slug} />;
 }
 
-// ✅ async 로직은 별도 컴포넌트에서 처리
+// ✅ async 로직은 Content 컴포넌트에서만 처리
 async function Content({ slug }: { slug: string }) {
   const data = await client.fetch<FullProject>(QUERY, { slug });
   if (!data) return notFound();
