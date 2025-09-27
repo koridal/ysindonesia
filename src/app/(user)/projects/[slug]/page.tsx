@@ -9,12 +9,10 @@ import type { MyImageSource } from "@/lib/sanity.image";
 
 export const revalidate = 30;
 
-// 이미지 블록 전용 타입(alt/asset 포함)
 type PortableImageBlock = {
   _type: "image";
   asset?: { _ref?: string; url?: string; _type?: string };
   alt?: string;
-  // 필요 시 caption 등 추가 가능: caption?: string;
 };
 
 type FullProject = {
@@ -31,11 +29,10 @@ const QUERY = `
   }
 `;
 
-// 이미지 렌더 안전 구성
 const portableComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
-      const v = value as PortableImageBlock; // 이미지 블록으로 명확히 좁힘
+      const v = value as PortableImageBlock;
 
       let src: string | null = null;
       try {
@@ -46,9 +43,7 @@ const portableComponents: PortableTextComponents = {
       if (!src) return null;
 
       const alt =
-        typeof v.alt === "string" && v.alt.trim().length > 0
-          ? v.alt
-          : "본문 이미지";
+        typeof v.alt === "string" && v.alt.trim().length > 0 ? v.alt : "본문 이미지";
 
       return (
         <Image
@@ -63,11 +58,14 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-export default async function Page({
-  params,
-}: {
-  params: { slug: string };
-}) {
+// ✅ props 타입을 직접 정의
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function Page({ params }: PageProps) {
   const data = await client.fetch<FullProject>(QUERY, { slug: params.slug });
   if (!data) return notFound();
 

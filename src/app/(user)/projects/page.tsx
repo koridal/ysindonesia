@@ -20,7 +20,8 @@ async function getData(): Promise<simpleProjectCard[]> {
 
 export default async function ProjectsIndexPage() {
   const data = await getData();
-  const list = (data ?? []).slice(0, 3); // 하이라이트는 3개만
+  const list = (data ?? []).slice(0, 3); // 최대 3개만
+
   return (
     <ProjectHighlight
       data={list}

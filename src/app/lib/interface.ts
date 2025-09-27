@@ -1,11 +1,12 @@
 import { TypedObject } from "sanity";
+import type { MyImageSource } from "@/lib/sanity.image";
 
-export interface simpleProjectCard {
+export type simpleProjectCard = {
   title: string;
-  smallDescription: string;
+  smallDescription?: string;
   currentSlug: string;
-  titleImage: string;
-}
+  titleImage: MyImageSource; // ← unknown에서 MyImageSource로 변경
+};
 
 export interface fullProject {
   currentSlug: string;
@@ -13,3 +14,6 @@ export interface fullProject {
   titleImage: string;
   body: TypedObject[];
 }
+
+
+
