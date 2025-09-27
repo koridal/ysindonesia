@@ -9,8 +9,6 @@ import type { MyImageSource } from "@/lib/sanity.image";
 
 export const revalidate = 30;
 
-type PageParams = { slug: string };
-
 // 이미지 블록 전용 타입(alt/asset 포함)
 type PortableImageBlock = {
   _type: "image";
@@ -65,24 +63,18 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-export default async function ProjectDetailPage({
+export default async function Page({
   params,
 }: {
-  params: PageParams;
+  params: { slug: string };
 }) {
   const data = await client.fetch<FullProject>(QUERY, { slug: params.slug });
-
   if (!data) return notFound();
 
-  // 커버 이미지 URL과 alt 안전 처리
   let coverUrl: string | null = null;
   if (data.titleImage) {
     try {
-      coverUrl = urlFor(data.titleImage)
-        .width(1600)
-        .height(1000)
-        .auto("format")
-        .url();
+      coverUrl = urlFor(data.titleImage).width(1600).height(1000).auto("format").url();
     } catch {
       coverUrl = null;
     }
