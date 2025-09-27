@@ -58,22 +58,17 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-// ✅ PageProps 이름 충돌 방지
-// interface ProjectPageProps {
-//   params: {
-//     slug: string;
-//   };
-// }
-
-// ✅ props를 Promise로 선언 → Next.js 15 타입 추론 버그 해결
-export default async function Page(
-  { params }: { params: { slug: string } }
-) {
-  return <Content slug={params.slug} />;
+// ✅ PageProps 명확히 지정
+interface PageProps {
+  params: {
+    slug: string;
+  };
 }
 
-// ✅ async 로직은 Content 컴포넌트에서 처리
-async function Content({ slug }: { slug: string }) {
+// ✅ async 서버 컴포넌트
+export default async function Page({ params }: PageProps) {
+  const { slug } = params;
+
   const data = await client.fetch<FullProject>(QUERY, { slug });
   if (!data) return notFound();
 
