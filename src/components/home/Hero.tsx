@@ -89,10 +89,10 @@ export default function Hero() {
 
       <div className="relative z-20 w-[92%] max-w-6xl mx-auto flex flex-col md:flex-row gap-6 items-stretch justify-center">
         {/* LEFT CARD */}
-        <div ref={leftCardRef} className="w-full md:w-1/2 max-w-md mx-auto backdrop-blur-md bg-white/8 border border-white/10 rounded-2xl p-6 md:p-8 shadow-[0_6px_30px_rgba(10,20,10,0.16)] text-white flex flex-col justify-center">
+        <div ref={leftCardRef} className="w-full md:w-1/2 max-w-md mx-auto backdrop-blur-md bg-white/3 border border-white/10 rounded-2xl p-6 md:p-8 shadow-[0_6px_30px_rgba(10,20,10,0.16)] text-white flex flex-col justify-center">
           <div className="mb-2 text-3xl md:text-4xl font-extrabold leading-tight">Yunsung Indonesia</div>
-          <div className="text-sm md:text-base text-green-100/90 mb-4">Building Trust, Building the Future</div>
-          <p className="text-sm text-white/85 leading-relaxed mb-4">
+          <div className="text-md font-semibold md:text-lg text-green-100/90 mb-4">Building Trust, Building the Future</div>
+          <p className="text-md text-white/85 leading-relaxed mb-4">
             We deliver turnkey industrial systems — <strong>mechanical</strong>, <strong>electrical</strong>, and <strong>fire protection</strong> — from engineering and equipment supply to installation and commissioning.
           </p>
           <div className="flex gap-3 items-center">
@@ -104,10 +104,10 @@ export default function Hero() {
         </div>
 
         {/* RIGHT CARD */}
-        <div ref={rightCardRef} className="w-full md:w-1/2 max-w-md mx-auto backdrop-blur-md bg-white/7 border border-white/10 rounded-2xl p-5 md:p-7 shadow-[0_6px_30px_rgba(10,20,10,0.12)] text-white flex flex-col">
+        <div ref={rightCardRef} className="w-full md:w-1/2 max-w-md mx-auto backdrop-blur-md bg-white/3 border border-white/10 rounded-2xl p-5 md:p-7 shadow-[0_6px_30px_rgba(10,20,10,0.12)] text-white flex flex-col">
           <div className="mb-3">
-            <div className="text-sm text-green-100/90 font-semibold">Our Services</div>
-            <div className="text-xs text-white/80">Project-based full delivery</div>
+            <div className="text-xl text-green-100/90 font-semibold">Our Services</div>
+            <div className="text-lg text-white/80">Project-based full delivery</div>
           </div>
 
           <div className="mt-3 grid grid-cols-2 gap-4">
@@ -120,8 +120,8 @@ export default function Hero() {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-sm font-medium">{s.name}</div>
-                  <div className="text-xs text-white/80">{s.desc}</div>
+                  <div className="text-md font-medium">{s.name}</div>
+                  <div className="text-md text-white/80">{s.desc}</div>
                 </div>
 
                 {/* Tooltip */}

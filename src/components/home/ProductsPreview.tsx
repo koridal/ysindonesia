@@ -17,13 +17,13 @@ type ProductItem = {
 
 const PRODUCTS: ProductItem[] = [
   {
-    title: "Industrial Panels & Switchgears",
+    title: "Panels & Switchgears",
     desc: "High-quality panels and switchgears for robust power distribution.",
     img: "/images/products/panel.jpg",
     icon: FaBoxOpen,
   },
   {
-    title: "HVAC Components",
+    title: "HVAC",
     desc: "Fan coils, chillers interfaces, and precision ducting modules.",
     img: "/images/products/hvac.jpg",
     icon: FaFan,
@@ -31,13 +31,13 @@ const PRODUCTS: ProductItem[] = [
   {
     title: "Pumps & Fire Suppression",
     desc: "Reliable pumps and clean-agent systems for fire safety.",
-    img: "/images/products/pump.jpg",
+    img: "/images/products/fire-protection.jpg",
     icon: FaPumpSoap,
   },
   {
-    title: "Sensors & Digital Modules",
-    desc: "BMS/SCADA-ready sensing and control units for smart factories.",
-    img: "/images/products/sensor.jpg",
+    title: "Mechanical facilities",
+    desc: "Conveyor, lift etc and control units for smart factories.",
+    img: "/images/products/conveyor.jpg",
     icon: TbDeviceAnalytics,
   },
 ];

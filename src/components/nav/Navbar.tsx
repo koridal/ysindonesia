@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FiPhone } from "react-icons/fi";
 import ModeToggle from "../mode-toggle";
-import Logo from "../common/Logo";
+import Image from "next/image";
 
 const MENU = [
   { href: "/", label: "Home" },
@@ -29,13 +29,18 @@ export default function Navbar() {
       scrolled ? "backdrop-blur-md bg-white/20 dark:bg-black/20 border-b border-white/20 dark:border-white/10" : "bg-transparent"
     }`}>
       <nav className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <Logo />
-          <span className="font-semibold text-ink dark:text-white">Yunsung Indonesia</span>
+        <Link href="/" className="flex items-center gap-4">
+          <Image 
+            src='/logo/yunsung-logo.png'
+            width={60}
+            height={60}
+            alt='logo'
+          />
+          <span className="font-bold text-xl md:text-2xl text-blue-700 dark:text-white">Yunsung Indonesia</span>
         </Link>
         <div className="hidden md:flex items-center gap-6">
           {MENU.map(m => (
-            <Link key={m.href} href={m.href} className="text-sm text-ink/80 dark:text-white/80 hover:text-ink dark:hover:text-white">
+            <Link key={m.href} href={m.href} className="text-md text-ink/80 dark:text-white/80 hover:text-ink dark:hover:text-white">
               {m.label}
             </Link>
           ))}

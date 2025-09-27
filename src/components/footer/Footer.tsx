@@ -1,5 +1,7 @@
 // components/footer/Footer.tsx
+import Link from "next/link";
 import { FiPhone, FiMail, FiMapPin } from "react-icons/fi";
+import { SiSanity } from "react-icons/si";
 
 export default function Footer() {
   return (
@@ -17,8 +19,11 @@ export default function Footer() {
             <li className="flex items-start gap-2"><FiMapPin /> Jl. Cempaka 1 Blok F 16 Delta Silicon, Cikarang Selatan, Bekasi, Jawa Barat 17530</li>
           </ul>
         </div>
-        <div className="text-sm text-ink/70 dark:text-white/70">
+        <div className="flex text-sm text-ink/70 dark:text-white/70 gap-6">
           <p>© {new Date().getFullYear()} Yunsung Indonesia. All rights reserved.</p>
+          <Link href="/studio" className="pr-2">
+            <SiSanity />
+          </Link>
         </div>
       </div>
     </footer>
