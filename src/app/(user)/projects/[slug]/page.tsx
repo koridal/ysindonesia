@@ -1,4 +1,4 @@
-// app/projects/[slug]/page.tsx
+// app/(user)/projects/[slug]/page.tsx
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
@@ -33,6 +33,7 @@ const portableComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
       const v = value as PortableImageBlock;
+
       let src: string | null = null;
       try {
         src = urlFor(v).width(1200).height(800).auto("format").url();
@@ -41,7 +42,11 @@ const portableComponents: PortableTextComponents = {
       }
       if (!src) return null;
 
-      const alt = v.alt && v.alt.trim() ? v.alt : "본문 이미지";
+      const alt =
+        typeof v.alt === "string" && v.alt.trim().length > 0
+          ? v.alt
+          : "본문 이미지";
+
       return (
         <Image
           src={src}
@@ -55,7 +60,7 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-// 정적 파라미터 생성: 타입 흔들림 방지
+// 정적 파라미터 생성으로 타입 추론/빌드 안정화
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const slugs = await client.fetch<string[]>(
     `*[_type == "post" && defined(slug.current)].slug.current`
@@ -63,23 +68,24 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   return slugs.map((slug) => ({ slug }));
 }
 
-// 페이지 함수: 인라인 시그니처만 사용 (PageProps 같은 별도 타입/제네릭 금지)
-export default async function Page({
-  params,
-}: {
-  params: { slug: string };
-}) {
+// 페이지 함수: 인라인 시그니처만 사용 (외부 PageProps/제네릭 금지)
+export default async function Page({ params }: { params: { slug: string } }) {
   const data = await client.fetch<FullProject>(QUERY, { slug: params.slug });
   if (!data) return notFound();
 
   let coverUrl: string | null = null;
   if (data.titleImage) {
     try {
-      coverUrl = urlFor(data.titleImage).width(1600).height(1000).auto("format").url();
+      coverUrl = urlFor(data.titleImage)
+        .width(1600)
+        .height(1000)
+        .auto("format")
+        .url();
     } catch {
       coverUrl = null;
     }
   }
+
   const coverAlt = data.title ? `${data.title} cover` : "프로젝트 커버 이미지";
 
   return (
