@@ -14,13 +14,26 @@ type FullProject = {
   body?: PortableTextBlock[] | null;
 };
 
+// 이미지 블록 형태(alt가 있을 수 있음)
+type PortableImageValue = {
+  _type?: string;
+  asset?: { _ref?: string; url?: string; _type?: string };
+  alt?: unknown;
+};
+
+function getAlt(v: PortableImageValue): string {
+  if (typeof v.alt === "string" && v.alt.trim().length > 0) return v.alt;
+  return "본문 이미지";
+}
+
 const portableComponents: PortableTextComponents = {
   types: {
     image: ({ value }) => {
-      // Sanity PortableText 내 이미지 블록을 널리 처리
+      const v = (value || {}) as PortableImageValue;
+
       let src: string | null = null;
       try {
-        src = urlFor(value as unknown as MyImageSource)
+        src = urlFor(v as unknown as MyImageSource)
           .width(1200)
           .height(800)
           .auto("format")
@@ -30,16 +43,10 @@ const portableComponents: PortableTextComponents = {
       }
       if (!src) return null;
 
-      const alt =
-        typeof (value as any)?.alt === "string" &&
-        (value as any)?.alt?.trim().length > 0
-          ? (value as any).alt
-          : "본문 이미지";
-
       return (
         <Image
           src={src}
-          alt={alt}
+          alt={getAlt(v)}
           width={1200}
           height={800}
           className="rounded-lg border mx-auto my-8"
@@ -49,17 +56,22 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-export default function ProjectDetailClient() {
-  // 현재 브라우저 URL에서 slug 파싱
-  const slug = useMemo(() => {
+// 현재 경로에서 slug 마지막 세그먼트만 추출
+function useSlugFromPathname(): string {
+  return useMemo(() => {
     if (typeof window === "undefined") return "";
-    // 예: /projects/my-post → ["", "projects", "my-post"]
     const parts = window.location.pathname.split("/").filter(Boolean);
     return parts[parts.length - 1] || "";
   }, []);
+}
+
+export default function ProjectDetailClient() {
+  const slug = useSlugFromPathname();
 
   const [data, setData] = useState<FullProject | null>(null);
-  const [status, setStatus] = useState<"idle" | "loading" | "error" | "notfound" | "done">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "error" | "notfound" | "done"
+  >("idle");
 
   useEffect(() => {
     if (!slug) return;
@@ -69,8 +81,10 @@ export default function ProjectDetailClient() {
       setStatus("loading");
       try {
         const res = await fetch(`/api/project/${encodeURIComponent(slug)}`, {
+          // CSR에선 캐시 힌트 정도로만 동작
           next: { revalidate: 30 },
         });
+
         if (res.status === 404) {
           if (mounted) setStatus("notfound");
           return;
@@ -79,12 +93,14 @@ export default function ProjectDetailClient() {
           if (mounted) setStatus("error");
           return;
         }
+
         const json = (await res.json()) as FullProject;
         if (mounted) {
           setData(json);
           setStatus("done");
         }
       } catch {
+        // console.error(err);
         if (mounted) setStatus("error");
       }
     }
