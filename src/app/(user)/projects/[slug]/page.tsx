@@ -43,9 +43,7 @@ const portableComponents: PortableTextComponents = {
       if (!src) return null;
 
       const alt =
-        typeof v.alt === "string" && v.alt.trim().length > 0
-          ? v.alt
-          : "본문 이미지";
+        typeof v.alt === "string" && v.alt.trim().length > 0 ? v.alt : "본문 이미지";
 
       return (
         <Image
@@ -60,7 +58,7 @@ const portableComponents: PortableTextComponents = {
   },
 };
 
-// 정적 파라미터 생성으로 타입 추론/빌드 안정화
+// 타입 흔들림 방지용 — 정적 파라미터 제공
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const slugs = await client.fetch<string[]>(
     `*[_type == "post" && defined(slug.current)].slug.current`
@@ -68,24 +66,23 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   return slugs.map((slug) => ({ slug }));
 }
 
-// 페이지 함수: 인라인 시그니처만 사용 (외부 PageProps/제네릭 금지)
-export default async function Page({ params }: { params: { slug: string } }) {
-  const data = await client.fetch<FullProject>(QUERY, { slug: params.slug });
+// 응급 안정본: params에 한해 any 적용(전역 PageProps 오염 우회)
+export default async function Page({ params }: any) {
+  const slug = typeof params?.slug === "string" ? params.slug : String(params?.slug ?? "");
+
+  if (!slug) return notFound();
+
+  const data = await client.fetch<FullProject>(QUERY, { slug });
   if (!data) return notFound();
 
   let coverUrl: string | null = null;
   if (data.titleImage) {
     try {
-      coverUrl = urlFor(data.titleImage)
-        .width(1600)
-        .height(1000)
-        .auto("format")
-        .url();
+      coverUrl = urlFor(data.titleImage).width(1600).height(1000).auto("format").url();
     } catch {
       coverUrl = null;
     }
   }
-
   const coverAlt = data.title ? `${data.title} cover` : "프로젝트 커버 이미지";
 
   return (
