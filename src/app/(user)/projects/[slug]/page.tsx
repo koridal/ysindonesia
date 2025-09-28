@@ -1,5 +1,5 @@
 // app/(user)/projects/[slug]/page.tsx
-import ProjectDetailClient from "@/components/project/ProjectDetailClient";
+import ProjectDetailClient from "@/components/projects/ProjectDetailClient";
 
 export const revalidate = 30;
 
