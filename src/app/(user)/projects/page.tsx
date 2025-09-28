@@ -1,12 +1,14 @@
 // app/projects/page.tsx
 import { client } from "@/app/lib/sanity";
-import ProjectHighlight from "@/components/home/ProjectHighlight";
 import type { simpleProjectCard } from "@/app/lib/interface";
+import HeroSection from "@/components/projects/HeroSection";
+import Divider from "@/components/projects/Divider";
+import ProjectGrid from "@/components/projects/ProjectGrid";
 
 export const revalidate = 30;
 
 const QUERY = `
-  *[_type == 'post'] | order(_createdAt desc) {
+  *[_type == "post"] | order(_createdAt desc) {
     title,
     smallDescription,
     "currentSlug": slug.current,
@@ -15,20 +17,18 @@ const QUERY = `
 `;
 
 async function getData(): Promise<simpleProjectCard[]> {
-  return client.fetch<simpleProjectCard[]>(QUERY);
+  const data = await client.fetch<simpleProjectCard[]>(QUERY);
+  return Array.isArray(data) ? data : [];
 }
 
 export default async function ProjectsIndexPage() {
   const data = await getData();
-  const list = (data ?? []).slice(0, 3); // 최대 3개만
 
   return (
-    <ProjectHighlight
-      data={list}
-      heading="All Projects"
-      subheading="Browse all our works and case studies."
-      ctaHref="/projects"
-      ctaLabel="All Projects"
-    />
+    <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 md:pt-24 pb-16 space-y-12">
+      <HeroSection />
+      <Divider />
+      <ProjectGrid items={data} />
+    </main>
   );
 }

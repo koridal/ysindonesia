@@ -1,3 +1,4 @@
+// app/lib/interface.ts
 import { TypedObject } from "sanity";
 import type { MyImageSource } from "@/lib/sanity.image";
 
@@ -5,7 +6,7 @@ export type simpleProjectCard = {
   title: string;
   smallDescription?: string;
   currentSlug: string;
-  titleImage: MyImageSource; // ← unknown에서 MyImageSource로 변경
+  titleImage: MyImageSource;
 };
 
 export interface fullProject {
@@ -14,6 +15,3 @@ export interface fullProject {
   titleImage: string;
   body: TypedObject[];
 }
-
-
-

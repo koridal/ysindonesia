@@ -1,8 +1,3 @@
-// components/home/ProjectHighlight.tsx
-// 한 파일에 서버(fetch) + UI 컴포넌트 통합 버전
-// - 기본: 4개만 노출(limit = 4)
-// - 전체 노출: <ProjectHighlight limit={Infinity} /> 로 사용
-
 import { client } from "@/app/lib/sanity";
 import { urlFor, type MyImageSource } from "@/lib/sanity.image";
 import Image from "next/image";
@@ -21,10 +16,10 @@ const QUERY = `
   }
 `;
 
-// 공통 카드 타입: 이미지 타입 확정
+// 공통 카드 타입
 type Card = simpleProjectCard & { titleImage: MyImageSource };
 
-// UI 전용 하이라이트(클라이언트 훅/상태 없이 SSR 안전)
+// UI 전용 컴포넌트 (Client safe)
 function HighlightUI({
   data = [],
   heading = "Featured Projects",
@@ -38,7 +33,7 @@ function HighlightUI({
   subheading?: string;
   ctaHref?: string;
   ctaLabel?: string;
-  limit?: number; // Infinity 전달 시 전체 노출
+  limit?: number;
 }) {
   const source = data ?? [];
   const list =
@@ -121,24 +116,27 @@ function HighlightUI({
   );
 }
 
-// 서버에서 데이터 가져와서 UI에 전달하는 래퍼(서버 컴포넌트)
+// 서버 컴포넌트 (데이터 fetch 또는 외부 data 주입 둘 다 가능)
 export default async function ProjectHighlight({
+  data, // ✅ 외부에서 직접 data 주입 가능
   heading,
   subheading,
   ctaHref,
   ctaLabel,
   limit = 4,
 }: {
+  data?: Card[];
   heading?: string;
   subheading?: string;
   ctaHref?: string;
   ctaLabel?: string;
-  limit?: number; // /projects 전체 페이지에서는 limit={Infinity}
+  limit?: number;
 }) {
-  const data = await client.fetch<Card[]>(QUERY);
+  // data prop 이 없으면 Sanity fetch 실행
+  const projects = data ?? (await client.fetch<Card[]>(QUERY));
   return (
     <HighlightUI
-      data={data}
+      data={projects}
       heading={heading}
       subheading={subheading}
       ctaHref={ctaHref}
