@@ -1,5 +1,5 @@
 // src/app/api/project/[slug]/route.ts
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { client } from "@/app/lib/sanity";
 
 // GROQ Query
@@ -12,16 +12,12 @@ const QUERY = `
   }
 `;
 
-interface Params {
-  slug: string;
-}
-
-// ✅ Next.js 15 맞는 함수 시그니처
+// ✅ Next.js 15 권장 방식
 export async function GET(
-  _req: NextRequest,
-  { params }: { params: Params }
+  req: NextRequest,
+  context: { params: Promise<{ slug: string }> } // 👈 params는 Promise 타입
 ) {
-  const { slug } = params;
+  const { slug } = await context.params; // 👈 반드시 await 필요
 
   if (!slug) {
     return NextResponse.json({ error: "BAD_REQUEST" }, { status: 400 });
