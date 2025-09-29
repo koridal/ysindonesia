@@ -15,11 +15,11 @@ export default function HeroSection() {
         Browse all our works and case studies.
       </p>
       <div className="mt-6 flex gap-3">
-        <Link href="/projects" className="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-white shadow hover:shadow-lg transition-all">
-          전체 보기
+        <Link href="/projects" className="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-white dark:text-black shadow hover:shadow-lg transition-all">
+          View all
         </Link>
         <Link href="/" className="inline-flex items-center rounded-lg border px-4 py-2 text-sm hover:bg-white/5 transition">
-          홈으로
+          Home
         </Link>
       </div>
     </section>

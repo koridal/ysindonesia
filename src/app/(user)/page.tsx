@@ -5,6 +5,9 @@ import ServicesPreview from "@/components/home/ServicesPreview";
 import { client } from "@/app/lib/sanity";
 import ProjectHighlight from "@/components/home/ProjectHighlight";
 import type { simpleProjectCard } from "@/app/lib/interface";
+import Marquee from "@/components/home/Marquee";
+import Contact from "@/components/home/Contact";
+import CallToAction from "@/components/home/CallToAction";
 
 export const revalidate = 30;
 
@@ -38,6 +41,9 @@ export default async function ProjectsIndexPage() {
         ctaHref="/projects"
         ctaLabel="All Projects"
       />
+      <Marquee />
+      <Contact />
+      <CallToAction />
     </div>
   );
 }

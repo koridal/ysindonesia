@@ -120,7 +120,7 @@ export default function ProjectDetailClient({
     return (
       <div className="mx-auto max-w-4xl px-4 py-10">
         <div className="animate-pulse text-ink/70 dark:text-white/70">
-          불러오는 중…
+          Loading
         </div>
       </div>
     );
@@ -129,7 +129,7 @@ export default function ProjectDetailClient({
   if (status === "notfound") {
     return (
       <div className="mx-auto max-w-4xl px-4 py-10">
-        <h1 className="text-2xl font-semibold">프로젝트를 찾을 수 없어요.</h1>
+        <h1 className="text-2xl font-semibold">Project not found.</h1>
       </div>
     );
   }
@@ -138,7 +138,7 @@ export default function ProjectDetailClient({
     return (
       <div className="mx-auto max-w-4xl px-4 py-10">
         <h1 className="text-2xl font-semibold">
-          문제가 발생했어요. 잠시 후 다시 시도해줘.
+          An error occurred. Please try again later.
         </h1>
       </div>
     );
