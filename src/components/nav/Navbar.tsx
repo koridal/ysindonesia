@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { FiPhone } from "react-icons/fi";
 import ModeToggle from "../mode-toggle";
 import Image from "next/image";
+import MobileNavigation from "./MobileNavigatuion";
 
 const MENU = [
   { href: "/", label: "Home" },
@@ -50,6 +51,7 @@ export default function Navbar() {
           <Button asChild variant="secondary" className="hidden sm:inline-flex">
             <Link href="/contact"><FiPhone className="mr-2" /> Get Quote</Link>
           </Button>
+          <MobileNavigation />
         </div>
       </nav>
     </header>

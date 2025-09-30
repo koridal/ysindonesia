@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { RiChat1Line, RiMapPin2Line, RiSmartphoneLine } from "react-icons/ri";
 import { gsap } from "gsap";
-import Form from "./Form";
+import Form from "../contact/Form";
 
 
 export default function Contact() {
@@ -67,7 +67,7 @@ export default function Contact() {
                     </h5>
                     <p className="mb-4">Our friendly team is here to help.</p>
                     <p className="font-semibold text-foreground">
-                      tristan007@naver.com
+                      admin@inkojayakonstruksi.com
                     </p>
                   </div>
                 </div>

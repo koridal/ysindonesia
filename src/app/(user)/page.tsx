@@ -6,7 +6,7 @@ import { client } from "@/app/lib/sanity";
 import ProjectHighlight from "@/components/home/ProjectHighlight";
 import type { simpleProjectCard } from "@/app/lib/interface";
 import Marquee from "@/components/home/Marquee";
-import Contact from "@/components/home/Contact";
+import Contact from "@/components/contact/Contact";
 import CallToAction from "@/components/home/CallToAction";
 
 export const revalidate = 30;

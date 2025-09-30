@@ -2,7 +2,6 @@
 import { client } from "@/app/lib/sanity";
 import type { simpleProjectCard } from "@/app/lib/interface";
 import HeroSection from "@/components/projects/HeroSection";
-import Divider from "@/components/projects/Divider";
 import ProjectGrid from "@/components/projects/ProjectGrid";
 
 export const revalidate = 30;
@@ -25,10 +24,29 @@ export default async function ProjectsIndexPage() {
   const data = await getData();
 
   return (
-    <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 md:pt-24 pb-16 space-y-12">
-      <HeroSection />
-      <Divider />
-      <ProjectGrid items={data} />
+    <main
+      className="
+        mx-auto max-w-7xl
+        px-6 sm:px-8 lg:px-12
+        pt-20 md:pt-28 pb-20
+        space-y-12
+      "
+    >
+      <HeroSection
+        title="All Projects"
+        subtitle="Browse all our works and case studies."
+        primaryHref="/projects"
+        primaryLabel="View All"
+        secondaryHref="/"
+        secondaryLabel="Home"
+        align="left"
+      />
+
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+
+      <section className="mt-2">
+        <ProjectGrid items={data} />
+      </section>
     </main>
   );
 }
