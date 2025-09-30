@@ -1,11 +1,11 @@
 import React from 'react'
-import Services from './serviceComponents/Services'
+import Products from './productComponents/Products'
 
 
 export default function page() {
   return (
     <div className='py-20'>
-      <Services />
+      <Products />
     </div>
   )
 }

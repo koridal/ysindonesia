@@ -62,8 +62,8 @@ export default function ProjectCon({ data }: { data: fullProject }) {
   return (
     <div ref={containerRef} className="mt-8 max-w-4xl mx-auto">
       <h1 ref={titleRef} className="opacity-0 translate-y-[-30px]">
-        <span className="block text-base text-center text-primary font-semibold tracking-wide uppercase">
-          Inko Jaya Konstruksi
+        <span className="block text-lg text-center text-primary font-semibold tracking-wide uppercase">
+          Yunsung Indonesia
         </span>
         <span className="mt-4 block text-3xl text-center leading-8 font-bold tracking-tight sm:text-4xl">
           {data.title}

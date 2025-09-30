@@ -10,9 +10,6 @@ export default function Title() {
       </h1>
       <div>
         <div className="grid">
-          <div>
-
-          </div>
         </div>
       </div>
     </div>

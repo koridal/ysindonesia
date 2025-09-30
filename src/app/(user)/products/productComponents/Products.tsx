@@ -40,7 +40,7 @@ const serviceData: ServiceItem[] = [
       { url: "images/products/construction.jpg" },
       { url: "images/products/crane.jpg" },
     ],
-    link: "/services/construction", // 링크 추가
+    link: "/products/construction", // 링크 추가
   },
   {
     name: "fire-fighting equipment",
@@ -58,7 +58,7 @@ const serviceData: ServiceItem[] = [
       { url: "images/products/fire-fighting.jpg" }, 
       { url: "images/products/hydrant-1.jpg" }
     ],
-    link: "/services/hydrant", // 링크 추가
+    link: "/products/hydrant", // 링크 추가
   },
   {
     name: "architectual design",
@@ -76,7 +76,7 @@ const serviceData: ServiceItem[] = [
       { url: "images/products/design.jpg" }, 
       { url: "images/products/blueprint.jpeg" }
     ],
-    link: "/services/architectural-design", // 링크 추가
+    link: "/products/architectural-design", // 링크 추가
   },
   {
     name: "electric & machinery equipment",
@@ -94,17 +94,17 @@ const serviceData: ServiceItem[] = [
       { url: "images/products/industrial.jpg" }, 
       { url: "images/products/electric-1.jpg" }
     ],
-    link: "/services/electric&machinery", // 링크 추가
+    link: "/products/electric&machinery", // 링크 추가
   },
 ];
 
-export default function Services() {
+export default function Products() {
   const [activeTab, setActiveTab] =
     useState<ServiceItem["name"]>("construction");
 
   return (
     <section className="max-w-7xl mx-auto" id="services">
-      <div className="items-center justify-center mx-auto">
+      <div className="items-center justify-center mx-auto mt-20">
         <div>
           <div className="text-center mb-10">
             <h1 className="services-title inline-block px-2 text-2xl font-semibold text-[#1f1c0c] border-l-[4px] border-[#504e4d] dark:text-white">

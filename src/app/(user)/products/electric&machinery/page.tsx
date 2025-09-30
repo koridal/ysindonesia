@@ -1,6 +1,6 @@
 import React from 'react'
-import Electric from '../serviceComponents/Electric'
-import Machinery from '../serviceComponents/Machinery'
+import Electric from '../productComponents/Electric'
+import Machinery from '../productComponents/Machinery'
 
 export default function page() {
   return (

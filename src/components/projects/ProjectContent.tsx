@@ -22,12 +22,14 @@ async function getData(): Promise<simpleProjectCard[]> {
 export default async function ProjectsIndexPage() {
   const data = await getData();
   return (
-    <ProjectHighlight
-      data={data}
-      heading="All Projects"
-      subheading="Browse all our works and case studies."
-      ctaHref="/projects"
-      ctaLabel="All Projects"
-    />
+    <div className="mt-20">
+      <ProjectHighlight
+        data={data}
+        heading="All Projects"
+        subheading="Browse all our works and case studies."
+        ctaHref="/projects"
+        ctaLabel="All Projects"
+      />
+    </div>
   );
 }

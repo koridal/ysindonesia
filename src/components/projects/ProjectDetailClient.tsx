@@ -159,9 +159,9 @@ export default function ProjectDetailClient({
   const coverAlt = data.title ? `${data.title} cover` : "프로젝트 커버 이미지";
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-10">
+    <main className="mx-auto max-w-4xl px-4 py-10 mt-10">
       <header className="text-center">
-        <p className="text-sm font-semibold text-primary tracking-wide uppercase">
+        <p className="text-xl font-semibold text-primary tracking-wide uppercase">
           Yunsung Indonesia
         </p>
         <h1 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight text-ink dark:text-white">

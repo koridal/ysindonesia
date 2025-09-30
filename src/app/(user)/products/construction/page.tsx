@@ -1,5 +1,5 @@
 import React from 'react'
-import Construction from '../serviceComponents/Construction'
+import Construction from '../productComponents/Construction'
 import ProjectContent from '@/components/projects/ProjectContent'
 
 export default function page() {

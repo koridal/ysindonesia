@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function HeroSection() {
   return (
     <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-primary/10 via-transparent to-transparent p-8 md:p-12">
-      <div className="pointer-events-none absolute -top-24 right-0 h-48 w-48 rounded-full bg-primary/20 blur-3xl" />
+      <div className="pointer-events-none absolute -top-24 right-0 h-48 w-48 rounded-full bg-primary/20 blur-3xl"/>
       <p className="text-xs font-semibold tracking-widest text-primary uppercase">
         Yunsung Indonesia
       </p>

@@ -1,160 +1,220 @@
 "use client";
-import Image from "next/image";
-import React, { useEffect, useRef } from "react";
-import { gsap } from "gsap";
 
-const Design = () => {
-  // 애니메이션을 위한 ref들
-  const titleRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const imgRefs = useRef<HTMLDivElement[]>([]);
+import Image from "next/image";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
+export default function Design() {
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-  const ctx = gsap.context(() => {
-    gsap.fromTo(
-      titleRef.current,
-      { opacity: 0, y: -50 },
-      { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-    );
+    if (!rootRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".prod-hero-title",
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.05 }
+      );
+      gsap.fromTo(
+        ".prod-hero-sub",
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.15 }
+      );
+      gsap.fromTo(
+        ".prod-intro, .prod-keywords",
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.1, delay: 0.2 }
+      );
+      gsap.fromTo(
+        ".prod-card",
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.12, delay: 0.25 }
+      );
+    }, rootRef);
+    return () => ctx.revert();
+  }, []);
 
-    gsap.fromTo(
-      textRef.current,
-      { opacity: 0, x: -50 },
-      { opacity: 1, x: 0, duration: 1, delay: 0.5, ease: "power3.out" }
-    );
+  const GALLERY = [
+    {
+      src: "/images/products/blueprint.jpeg",
+      alt: "Blueprint",
+      caption: "Concept blueprint and layout planning",
+    },
+    {
+      src: "/images/products/design.jpg",
+      alt: "Building concept",
+      caption: "Architectural study for building massing",
+    },
+    {
+      src: "/images/architectual-design/nesia-19.jpeg",
+      alt: "Factory exterior",
+      caption: "Factory facade and route planning",
+    },
+    {
+      src: "/images/architectual-design/office.jpg",
+      alt: "Office interior",
+      caption: "Office interior zoning and flow",
+    },
+    {
+      src: "/images/architectual-design/warehouse.jpg",
+      alt: "Warehouse",
+      caption: "Warehouse logistics circulation",
+    },
+  ];
 
-    gsap.fromTo(
-      imgRefs.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.3,
-        ease: "power3.out",
-        delay: 0.8,
-      }
-    );
-  });
-
-  return () => ctx.revert();
-}, []);
-
+  const KEYWORDS = [
+    "Factory",
+    "Logistics",
+    "Building",
+    "Office",
+    "Dormitory",
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto">
-      {/* 제목 섹션 */}
-      <div
-        ref={titleRef}
-        className="grid h-40 mt-10 text-white place-items-center bg-red-400  shadow-lg"
+    <main
+      ref={rootRef}
+      className="
+        mx-auto max-w-7xl
+        px-6 sm:px-8 lg:px-12
+        pt-20 md:pt-28 pb-20
+        space-y-10
+      "
+    >
+      {/* Hero */}
+      <section
+        className="
+          relative overflow-hidden rounded-2xl
+          border border-white/10 bg-gradient-to-b from-primary/10 via-transparent to-transparent
+          backdrop-blur-sm p-8 md:p-12
+        "
       >
-        <h1 className="text-3xl font-semibold tracking-tight text-center">
-          Architectual Design
+        <div className="pointer-events-none absolute -top-24 right-0 h-48 w-48 rounded-full bg-primary/20 blur-3xl" />
+        <h1 className="prod-hero-title text-3xl md:text-5xl font-extrabold tracking-tight">
+          Architectural Design
         </h1>
-      </div>
+        <p className="prod-hero-sub mt-3 max-w-2xl text-ink/80 dark:text-white/80">
+          End-to-end architectural planning for factories, logistics, offices, and more — aligned with code and constructability.
+        </p>
+      </section>
 
-      {/* 본문 */}
-      <div className="flex flex-wrap justify-center mt-10">
-        {/* 텍스트 */}
-        <div ref={textRef} className="w-full lg:w-1/2 px-4 lg:px-12 mt-4">
-          <p className="font-light leading-6 tracking-tight text-justify">
-            <span className="text-2xl font-semibold text-transparent place-items-center bg-gradient-to-r from-pink-300 via-slate-500 to-purple-500 bg-clip-text">
-              Factory <br /><br />
-              Logistics <br /><br />
-              Building<br /><br />
-              Office<br /><br />
-              Dormitory 
-            </span>
+      {/* Intro + Keywords */}
+      <section className="grid lg:grid-cols-2 gap-8 items-start">
+        {/* Intro text */}
+        <div className="prod-intro">
+          <div
+            className="
+              rounded-2xl border border-white/10
+              bg-white/60 dark:bg-white/5 backdrop-blur-sm
+              p-6
+            "
+          >
+            <h2 className="text-xl md:text-2xl font-bold tracking-tight">
+              Design Scope
+            </h2>
+            <p className="mt-3 text-sm md:text-[15px] text-ink/80 dark:text-white/80 max-w-prose">
+              We craft architectural solutions across industrial and commercial facilities.
+              From conceptual massing to detailed coordination, our design balances
+              regulations, workflows, and future expansion.
+            </p>
+          </div>
+        </div>
+
+        {/* Keywords block */}
+        <div className="prod-keywords">
+          <div
+            className="
+              rounded-2xl border border-white/10
+              bg-white/60 dark:bg-white/5 backdrop-blur-sm
+              p-6
+            "
+          >
+            <h3 className="text-lg md:text-xl font-bold tracking-tight">Focus Areas</h3>
+            <ul className="mt-3 grid grid-cols-2 gap-3">
+              {KEYWORDS.map((k) => (
+                <li
+                  key={k}
+                  className="
+                    rounded-xl border border-white/10
+                    bg-white/50 dark:bg-white/5 backdrop-blur-sm
+                    px-3 py-2 text-sm font-semibold
+                    text-ink dark:text-white
+                  "
+                >
+                  {k}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs text-ink/60 dark:text-white/60">
+              Zoning, circulation, code compliance, and constructability-first details.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Grid */}
+      <section>
+        <div className="mb-4">
+          <h3 className="text-xl md:text-2xl font-bold tracking-tight">Gallery</h3>
+          <p className="mt-1 text-sm md:text-[15px] text-ink/80 dark:text-white/80 max-w-prose">
+            A consistent 4:3 aspect ratio for visual harmony. Click items in other pages if lightbox is enabled.
           </p>
         </div>
 
-        {/* 첫번째 이미지 */}
-        <div
-          ref={(el) => {
-            if (el) imgRefs.current.push(el);
-          }}
-          className="w-full lg:w-1/2 flex justify-center mb-6"
-        >
-          <Image
-            width={400}
-            height={200}
-            src="/images/homeimage/blueprint.jpeg"
-            alt="blueprint"
-            className="w-[500px] h-[300px] object-cover rounded-3xl px-2 shadow-lg"
-          />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {GALLERY.map((g) => (
+            <div
+              key={g.src}
+              className="
+                prod-card relative overflow-hidden
+                rounded-2xl border border-white/10
+                bg-white/60 dark:bg-white/5 backdrop-blur-sm
+                hover:-translate-y-0.5 hover:shadow-2xl transition-all
+              "
+            >
+              <div className="relative w-full" style={{ aspectRatio: "4/3" }}>
+                <Image
+                  src={g.src}
+                  alt={g.alt}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 50vw, 33vw"
+                  priority={false}
+                />
+              </div>
+              <div className="px-4 py-3">
+                <h4 className="font-semibold">{g.alt}</h4>
+                {g.caption && (
+                  <p className="mt-1 text-xs text-ink/70 dark:text-white/70">
+                    {g.caption}
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
+      </section>
 
-        {/* 추가 이미지 2개 */}
-        <div className="flex flex-col lg:flex-row mt-10 mx-auto max-w-7xl gap-10 lg:gap-32">
-          {/* 왼쪽 이미지 - 위 텍스트 영역의 왼쪽 라인에 맞춤 */}
-          <div
-            ref={(el) => {
-              if (el) imgRefs.current.push(el);
-            }}
-            className="w-full lg:w-1/2 flex justify-start mb-6 lg:mb-0"
+      {/* CTA */}
+      <section
+        className="
+          relative overflow-hidden rounded-2xl
+          border border-white/10 bg-gradient-to-r from-primary/15 via-transparent to-fuchsia-400/10
+          backdrop-blur-sm p-8 md:p-10
+        "
+      >
+        <h3 className="text-xl md:text-2xl font-bold tracking-tight">Plan your next facility with us</h3>
+        <p className="mt-2 text-ink/80 dark:text-white/80">
+          Share footprint, utility needs, and timeline — we’ll respond with a tailored concept draft.
+        </p>
+        <div className="mt-5">
+          <a
+            href="/contact"
+            className="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-white shadow hover:shadow-lg transition-all"
           >
-            <Image
-              width={400}
-              height={300}
-              src="/images/homeimage/design.jpg"
-              alt="buildingr"
-              className="w-[500px] h-[300px] object-cover rounded-3xl px-2 shadow-lg"
-            />
-          </div>
-
-          {/* 오른쪽 이미지 - 위 hydrant 이미지의 오른쪽 라인에 맞춤 */}
-          <div
-            ref={(el) => {
-              if (el) imgRefs.current.push(el);
-            }}
-            className="w-full lg:w-1/2 flex justify-end"
-          >
-            <Image
-              width={400}
-              height={300}
-              src="/images/architectual-design/nesia-19.jpeg"
-              alt="factory"
-              className="w-[500px] h-[300px] object-cover rounded-3xl px-2 shadow-lg"
-            />
-          </div>
+            Contact us
+          </a>
         </div>
-        {/* 추가 이미지 2개 */}
-        <div className="flex flex-col lg:flex-row mt-10 mx-auto max-w-7xl gap-10 lg:gap-32">
-          {/* 왼쪽 이미지 - 위 텍스트 영역의 왼쪽 라인에 맞춤 */}
-          <div
-            ref={(el) => {
-              if (el) imgRefs.current.push(el);
-            }}
-            className="w-full lg:w-1/2 flex justify-start mb-6 lg:mb-0"
-          >
-            <Image
-              width={400}
-              height={300}
-              src="/images/architectual-design/office.jpg"
-              alt="office"
-              className="w-[500px] h-[300px] object-cover rounded-3xl px-2 shadow-lg"
-            />
-          </div>
-
-          {/* 오른쪽 이미지 - 위 hydrant 이미지의 오른쪽 라인에 맞춤 */}
-          <div
-            ref={(el) => {
-              if (el) imgRefs.current.push(el);
-            }}
-            className="w-full lg:w-1/2 flex justify-end"
-          >
-            <Image
-              width={400}
-              height={300}
-              src="/images/architectual-design/warehouse.jpg"
-              alt="logistics"
-              className="w-[500px] h-[300px] object-cover rounded-3xl px-2 shadow-lg"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
-};
-
-export default Design;
+}

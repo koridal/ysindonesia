@@ -3,63 +3,59 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import type { ScrollTrigger as ScrollTriggerType } from "gsap/ScrollTrigger";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function Hydrant() {
-  const rootRef = useRef<HTMLDivElement | null>(null);
+gsap.registerPlugin(ScrollTrigger);
 
-  gsap.registerPlugin(ScrollTrigger);
+export default function MachineEquip() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+  const textRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
-    if (!rootRef.current) return;
+    if (!containerRef.current) return;
 
-    gsap.set(rootRef.current, { autoAlpha: 0 });
+    // 초기 깜빡임 방지
+    gsap.set(containerRef.current, { autoAlpha: 0 });
 
     const ctx = gsap.context(() => {
-      gsap.to(rootRef.current, {
+      // 전체 컨테이너 페이드인
+      gsap.to(containerRef.current, {
         autoAlpha: 1,
         duration: 0.6,
         ease: "power1.out",
       });
 
+      // Hero 타이틀/서브
       gsap.fromTo(
-        ".hy-hero-title",
-        { opacity: 0, y: 24 },
+        ".me-hero-title",
+        { opacity: 0, y: 22 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.05 }
       );
       gsap.fromTo(
-        ".hy-hero-sub",
-        { opacity: 0, y: 16 },
+        ".me-hero-sub",
+        { opacity: 0, y: 14 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", delay: 0.12 }
       );
 
-      // 섹션들
-      gsap.utils.toArray<HTMLElement>(".hy-section").forEach((sec, i) => {
-        const stVars: ScrollTriggerType["vars"] = {
-          trigger: sec,
-          start: "top 82%",
-        };
+      // 소개/스펙 섹션
+      gsap.utils.toArray<HTMLElement>(".me-section").forEach((sec, i) => {
         gsap.fromTo(
           sec,
-          { opacity: 0, y: 18 },
+          { opacity: 0, y: 20 },
           {
             opacity: 1,
             y: 0,
             duration: 0.7,
             ease: "power3.out",
+            scrollTrigger: { trigger: sec, start: "top 82%" },
             delay: i * 0.05,
-            scrollTrigger: stVars,
           }
         );
       });
 
-      // 카드(이미지)들
-      gsap.utils.toArray<HTMLElement>(".hy-card").forEach((card, i) => {
-        const stVars: ScrollTriggerType["vars"] = {
-          trigger: card,
-          start: "top 86%",
-        };
+      // 갤러리 카드
+      gsap.utils.toArray<HTMLElement>(".me-card").forEach((card, i) => {
         gsap.fromTo(
           card,
           { opacity: 0, y: 24, scale: 0.98 },
@@ -69,37 +65,59 @@ export default function Hydrant() {
             scale: 1,
             duration: 0.7,
             ease: "power3.out",
+            scrollTrigger: { trigger: card, start: "top 86%" },
             delay: (i % 3) * 0.1,
-            scrollTrigger: stVars,
           }
         );
       });
-    }, rootRef);
+    }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
+  // 스펙 라인(영문 표기)
+  const SPEC_LINES = [
+    "Banding Machine",
+    "Cutting Machine",
+    "Milling Machine",
+    "Busbar Bending Machine",
+    "Radial Machine",
+    "CO₂ & Argon Welding Machine",
+    "Global Powder Coating Line",
+  ];
+
+  // 갤러리 이미지(4:3 카드)
   const GALLERY = [
     {
-      src: "/images/hydrant/hydrant.jpg",
-      alt: "Hydrant system manifold",
-      caption: "Hydrant network and control manifold",
+      src: "/images/machine-equip/ma-eq-1.jpg",
+      alt: "General view of machinery workstation",
+      caption: "Workstation arranged for efficient workflow",
     },
     {
-      src: "/images/hydrant/chiller.jpg",
-      alt: "Chiller unit",
-      caption: "Chiller and chilled water loop",
+      src: "/images/machine-equip/ma-eq-2.jpg",
+      alt: "Cutting and milling station",
+      caption: "Precision cutting and milling equipment",
     },
     {
-      src: "/images/hydrant/pipe.jpg",
-      alt: "Fire piping",
-      caption: "Fire-main piping and routing",
+      src: "/images/machine-equip/ma-eq-3.jpg",
+      alt: "Busbar bending and forming",
+      caption: "Busbar forming processes",
+    },
+    {
+      src: "/images/machine-equip/ma-eq-4.jpg",
+      alt: "Radial and drilling machines",
+      caption: "Radial/drilling setup for accurate holes",
+    },
+    {
+      src: "/images/machine-equip/ma-eq-5.jpg",
+      alt: "CO/Argon welding and coating line",
+      caption: "Welding and powder coating line",
     },
   ];
 
   return (
     <main
-      ref={rootRef}
+      ref={containerRef}
       className="
         mx-auto max-w-7xl
         px-6 sm:px-8 lg:px-12
@@ -111,23 +129,22 @@ export default function Hydrant() {
       <section
         className="
           relative overflow-hidden rounded-2xl
-          border border-white/10
-          bg-gradient-to-b from-primary/10 via-transparent to-transparent
+          border border-white/10 bg-gradient-to-b from-primary/10 via-transparent to-transparent
           backdrop-blur-sm p-8 md:p-12
         "
       >
         <div className="pointer-events-none absolute -top-24 right-0 h-48 w-48 rounded-full bg-primary/20 blur-3xl" />
-        <h1 className="hy-hero-title text-3xl md:text-5xl font-extrabold tracking-tight">
-          Hydrant Pipe, Chiller, and Hydrant System
+        <h1 ref={headingRef} className="me-hero-title text-3xl md:text-5xl font-extrabold tracking-tight">
+          Machinery Equipment
         </h1>
-        <p className="hy-hero-sub mt-3 max-w-2xl text-ink/80 dark:text-white/80">
-          Integrated fire hydrant networks and chilled-water systems—designed
-          for performance and safety compliance.
+        <p className="me-hero-sub mt-3 max-w-2xl text-ink/80 dark:text-white/80">
+          For smoother work and reliable quality, we deploy modern machinery aligned with manufacturing standards.
         </p>
       </section>
 
-      {/* Intro */}
-      <section className="hy-section grid lg:grid-cols-2 gap-8 items-start">
+      {/* Overview + Spec */}
+      <section className="me-section grid lg:grid-cols-2 gap-8 items-start">
+        {/* Overview */}
         <div
           className="
             rounded-2xl border border-white/10
@@ -135,16 +152,14 @@ export default function Hydrant() {
             p-6
           "
         >
-          <h2 className="text-xl md:text-2xl font-bold tracking-tight">
-            Overview
-          </h2>
-          <p className="mt-3 text-sm md:text-[15px] text-ink/80 dark:text-white/80 max-w-prose">
-            We deliver hydrant and chilled water systems that meet international
-            standards. Our scope covers hydraulic design, pipe routing,
-            equipment selection, and documentation for seamless commissioning.
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight">Overview</h2>
+          <p ref={textRef} className="mt-3 text-sm md:text-[15px] text-ink/80 dark:text-white/80 max-w-prose">
+            Our machinery lineup covers cutting, milling, bending, drilling, welding, and coating —
+            engineered to support precise fabrication and repeatable quality on the shop floor.
           </p>
         </div>
 
+        {/* Spec List */}
         <div
           className="
             rounded-2xl border border-white/10
@@ -152,24 +167,18 @@ export default function Hydrant() {
             p-6
           "
         >
-          <h3 className="text-lg md:text-xl font-bold tracking-tight">Scope</h3>
+          <h3 className="text-lg md:text-xl font-bold tracking-tight">Key Equipment</h3>
           <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm md:text-[15px] text-ink/80 dark:text-white/80">
-            {[
-              "Hydrant network design and pipe routing",
-              "Pump selection and flow/pressure verification",
-              "Chiller sizing and chilled-water balancing",
-              "Valves, detectors, and alarm integration",
-              "As-built drawings and test reports",
-            ].map((item) => (
+            {SPEC_LINES.map((line) => (
               <li
-                key={item}
+                key={line}
                 className="
                   rounded-lg border border-white/10
                   bg-white/50 dark:bg-white/5 backdrop-blur-sm
                   px-3 py-2
                 "
               >
-                {item}
+                {line}
               </li>
             ))}
           </ul>
@@ -177,14 +186,11 @@ export default function Hydrant() {
       </section>
 
       {/* Gallery */}
-      <section className="hy-section">
+      <section className="me-section">
         <div className="mb-4">
-          <h3 className="text-xl md:text-2xl font-bold tracking-tight">
-            Gallery
-          </h3>
+          <h3 className="text-xl md:text-2xl font-bold tracking-tight">Gallery</h3>
           <p className="mt-1 text-sm md:text-[15px] text-ink/80 dark:text-white/80 max-w-prose">
-            Consistent 4:3 image ratio with glass cards for visual harmony
-            across devices.
+            Consistent 4:3 image ratio with glass cards for visual harmony across devices.
           </p>
         </div>
 
@@ -193,7 +199,7 @@ export default function Hydrant() {
             <div
               key={g.src}
               className="
-                hy-card relative overflow-hidden
+                me-card relative overflow-hidden
                 rounded-2xl border border-white/10
                 bg-white/60 dark:bg-white/5 backdrop-blur-sm
                 hover:-translate-y-0.5 hover:shadow-2xl transition-all
@@ -206,15 +212,12 @@ export default function Hydrant() {
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 50vw, 33vw"
-                  priority={false}
                 />
               </div>
               <div className="px-4 py-3">
                 <h4 className="font-semibold">{g.alt}</h4>
                 {g.caption && (
-                  <p className="mt-1 text-xs text-ink/70 dark:text-white/70">
-                    {g.caption}
-                  </p>
+                  <p className="mt-1 text-xs text-ink/70 dark:text-white/70">{g.caption}</p>
                 )}
               </div>
             </div>
@@ -230,12 +233,9 @@ export default function Hydrant() {
           backdrop-blur-sm p-8 md:p-10
         "
       >
-        <h3 className="text-xl md:text-2xl font-bold tracking-tight">
-          Need hydrant or chilled-water upgrades?
-        </h3>
+        <h3 className="text-xl md:text-2xl font-bold tracking-tight">Need a detailed equipment list?</h3>
         <p className="mt-2 text-ink/80 dark:text-white/80">
-          Share your facility layout and fire-water demand—we’ll prepare a
-          compliant design and commissioning plan.
+          Tell us your fabrication scope and throughput. We’ll share a tailored machine lineup and layout concept.
         </p>
         <div className="mt-5">
           <a
