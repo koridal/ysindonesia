@@ -18,7 +18,7 @@ export default function CallToAction() {
             and Next-Generation Technology.
           </p>
           <Link href="https://inkojayakonstruksi.vercel.app" target="blank">
-            <Button className="rounded-bl-none rounded-tl-xl mt-4">
+            <Button className="rounded-bl-none rounded-tl-xl mt-4 cursor-pointer">
               Inko Jaya Konstruksi
             </Button>
           </Link>
